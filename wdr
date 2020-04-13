@@ -10,18 +10,20 @@ while getopts 'hcl:' o; do
      *)  usage; return 1;;
      esac
 done
+
 fetch=(curl -sf);
 # fetch=(wget -qO -);
-
+filter=(pcre2grep -o '[\d.-]+');
+# filter=(sed -r 's/(.?+) ([\d.-]+)/\2/; /null/d');
 [ -z ${location} ] && location='Sofia,Bulgaria';
-clear; figlet Weather for ${location};
 location=$(echo "${location}" | sed "s/ /%20/g");
 api_key=85a4e3c55b73909f42c6a23ec35b7147;
 
 api_call='weather';
 weather=$(${fetch} "api.openweathermap.org/data/2.5/${api_call}?q=${location}&appid=${api_key}&units=metric") || (echo 'Sum Tin Wong!'; return 22);
+clear; figlet Weather for ${location};
 echo ${weather} | jq -r;
-((${c})) && return 0;
+((${c})) && unset c location && return 0;
 
 if [ -z "${weather}" ]; then; echo "ERROR: Cannot fetch weather data"; return 69; fi;
 if [ "$(echo "${weather}" | jq -r '.cod' 2>/dev/null)" != 200 ]; then; echo "ERROR: Cannot fetch weather data for the given location"; return 75; fi;
@@ -34,36 +36,36 @@ weather=$(${fetch} "https://api.openweathermap.org/data/2.5/${api_call}?lat=${la
 
 mkdir /tmp/wdr; cd /tmp/wdr;
 # 48 HOUR FORECAST
-echo ${weather} | jq -r '.hourly|..|.dt?' | pcre2grep -o '[\d.-]+' > dt48h;
-echo ${weather} | jq -r '.hourly|..|.temp?' | pcre2grep -o '[\d.-]+' > temp48h;
-echo ${weather} | jq -r '.hourly|..|.feels_like?' | pcre2grep -o '[\d.-]+' > feels_like48h;
-echo ${weather} | jq -r '.hourly|..|.pressure?' | pcre2grep -o '[\d.-]+' > pressure48h;
-echo ${weather} | jq -r '.hourly|..|.humidity?' | pcre2grep -o '[\d.-]+' > humidity48h;
-echo ${weather} | jq -r '.hourly|..|.dew_point?' | pcre2grep -o '[\d.-]+' > dew_point48h;
-echo ${weather} | jq -r '.hourly|..|.clouds?' | pcre2grep -o '[\d.-]+' > clouds48h;
-echo ${weather} | jq -r '.hourly|..|.wind_speed?' | pcre2grep -o '[\d.-]+' > wind_speed48h;
-echo ${weather} | jq -r '.hourly|..|.wind_deg?' | pcre2grep -o '[\d.-]+' > wind_deg48h;
+echo ${weather} | jq -r '.hourly|..|.dt?' | ${filter} > dt48h;
+echo ${weather} | jq -r '.hourly|..|.temp?' | ${filter} > temp48h;
+echo ${weather} | jq -r '.hourly|..|.feels_like?' | ${filter} > feels_like48h;
+echo ${weather} | jq -r '.hourly|..|.pressure?' | ${filter} > pressure48h;
+echo ${weather} | jq -r '.hourly|..|.humidity?' | ${filter} > humidity48h;
+echo ${weather} | jq -r '.hourly|..|.dew_point?' | ${filter} > dew_point48h;
+echo ${weather} | jq -r '.hourly|..|.clouds?' | ${filter} > clouds48h;
+echo ${weather} | jq -r '.hourly|..|.wind_speed?' | ${filter} > wind_speed48h;
+echo ${weather} | jq -r '.hourly|..|.wind_deg?' | ${filter} > wind_deg48h;
 
 # 7 DAY FORECAST
-echo ${weather} | jq -r '.daily|..|.temp?|.min?' | pcre2grep -o '[\d.-]+' > min7d;
-echo ${weather} | jq -r '.daily|..|.temp?|.max?' | pcre2grep -o '[\d.-]+' > max7d;
+echo ${weather} | jq -r '.daily|..|.temp?|.min?' | ${filter} > min7d;
+echo ${weather} | jq -r '.daily|..|.temp?|.max?' | ${filter} > max7d;
 
-echo ${weather} | jq -r '.daily|..|.temp?|.day?' | pcre2grep -o '[\d.-]+' > day7d;
-echo ${weather} | jq -r '.daily|..|.temp?|.night?' | pcre2grep -o '[\d.-]+' > night7d;
-echo ${weather} | jq -r '.daily|..|.temp?|.eve?' | pcre2grep -o '[\d.-]+' > eve7d;
-echo ${weather} | jq -r '.daily|..|.temp?|.morn?' | pcre2grep -o '[\d.-]+' > morn7d;
+echo ${weather} | jq -r '.daily|..|.temp?|.day?' | ${filter} > day7d;
+echo ${weather} | jq -r '.daily|..|.temp?|.night?' | ${filter} > night7d;
+echo ${weather} | jq -r '.daily|..|.temp?|.eve?' | ${filter} > eve7d;
+echo ${weather} | jq -r '.daily|..|.temp?|.morn?' | ${filter} > morn7d;
 
-echo ${weather} | jq -r '.daily|..|.feels_like?|.day?' | pcre2grep -o '[\d.-]+' > flday7d;
-echo ${weather} | jq -r '.daily|..|.feels_like?|.night?' | pcre2grep -o '[\d.-]+' > flnight7d;
-echo ${weather} | jq -r '.daily|..|.feels_like?|.eve?' | pcre2grep -o '[\d.-]+' > fleve7d;
-echo ${weather} | jq -r '.daily|..|.feels_like?|.morn?' | pcre2grep -o '[\d.-]+' > flmorn7d;
+echo ${weather} | jq -r '.daily|..|.feels_like?|.day?' | ${filter} > flday7d;
+echo ${weather} | jq -r '.daily|..|.feels_like?|.night?' | ${filter} > flnight7d;
+echo ${weather} | jq -r '.daily|..|.feels_like?|.eve?' | ${filter} > fleve7d;
+echo ${weather} | jq -r '.daily|..|.feels_like?|.morn?' | ${filter} > flmorn7d;
 
-echo ${weather} | jq -r '.daily|..|.pressure?' | pcre2grep -o '[\d.-]+' > pressure7d;
-echo ${weather} | jq -r '.daily|..|.humidity?' | pcre2grep -o '[\d.-]+' > humidity7d;
-echo ${weather} | jq -r '.daily|..|.clouds?' | pcre2grep -o '[\d.-]+' > clouds7d;
-echo ${weather} | jq -r '.daily|..|.dew_point?' | pcre2grep -o '[\d.-]+' > dew_point7d;
-echo ${weather} | jq -r '.daily|..|.wind_deg?' | pcre2grep -o '[\d.-]+' > wind_deg7d;
-echo ${weather} | jq -r '.daily|..|.wind_speed?' | pcre2grep -o '[\d.-]+' > wind_speed7d;
+echo ${weather} | jq -r '.daily|..|.pressure?' | ${filter} > pressure7d;
+echo ${weather} | jq -r '.daily|..|.humidity?' | ${filter} > humidity7d;
+echo ${weather} | jq -r '.daily|..|.clouds?' | ${filter} > clouds7d;
+echo ${weather} | jq -r '.daily|..|.dew_point?' | ${filter} > dew_point7d;
+echo ${weather} | jq -r '.daily|..|.wind_deg?' | ${filter} > wind_deg7d;
+echo ${weather} | jq -r '.daily|..|.wind_speed?' | ${filter} > wind_speed7d;
 
 octave-cli --persist ~/.config/zsh/autoloadmedaddy/wdr.m;
 cd ~; rm -r /tmp/wdr;
