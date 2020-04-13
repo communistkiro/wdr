@@ -7,4 +7,5 @@ weather thingy
 - jq
 - figlet
 - curl (or wget)
+- pcre2grep (or pcregrep, or sed, many even awk)
 
