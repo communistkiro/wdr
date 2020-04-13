@@ -3,6 +3,7 @@ weather thingy
 ` Usage: wdr [-h (help)] [-c (current only)] [-l location] `
 Edit `wdr`
 - default location
+- where the wdr.m file is located
 - fetch cmd
 - filter cmd
 
