@@ -9,3 +9,9 @@ weather thingy
 - curl (or wget)
 - pcre2grep (or pcregrep, or sed, many even awk)
 
+
+### Examples
+![1] ![2]
+
+[1]: https://github.com/communistkiro/wdr/raw/master/gscreenshot_2020-04-13-044308.png "ex. 1"
+[2]: https://github.com/communistkiro/wdr/raw/master/gscreenshot_2020-04-13-051504.png "ex. 2"
