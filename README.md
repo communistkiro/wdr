@@ -1,7 +1,10 @@
 # wdr
 weather thingy
 ` Usage: wdr [-h (help)] [-c (current only)] [-l location] `
-Edit the default location in `wdr` to whatever.
+Edit `wdr`
+- default location
+- fetch cmd
+- filter cmd
 
 ### Dependencies
 - octave + financial pkg (or matlab)
