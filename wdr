@@ -1,7 +1,7 @@
 #!/bin/zsh
 function wdr () {
 # https://openweathermap.org/api/
-usage() {echo "Usage: $0 [-c (current only)] [-h (help)] [location]" 1>&2;};
+usage() {echo "Usage: wdr [-h (help)] [-c (current only)] [-l location]" 1>&2;};
 while getopts 'hcl:' o; do
   case ${o} in
      h)  usage; return 0;;
