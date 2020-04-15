@@ -10,9 +10,9 @@ Edit `wdr`
 ### Dependencies
 - octave + financial pkg (or matlab)
 - jq
-- figlet
+- figlet (though not necessary)
 - curl (or wget)
-- pcre2grep (or pcregrep, or sed, many even awk)
+- sed
 
 
 ### Examples
