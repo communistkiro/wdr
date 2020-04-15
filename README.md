@@ -1,6 +1,6 @@
 # wdr
 weather thingy
-` Usage: wdr [-h (help)] [-c (current only)] [-l location] `
+` Usage: wdr [-h (help)] [-d (description/s only] [-c (current only)] [-l location] `
 Edit `wdr`
 - default location
 - where the wdr.m file is located
