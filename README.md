@@ -8,14 +8,15 @@ Edit `wdr`
 - filter cmd
 
 ### Dependencies
-- octave + financial pkg (or matlab)
+- ~~octave + financial pkg (or matlab)~~
 - jq
-- figlet (though not necessary)
-- curl (or wget)
+- curl/wget
+- pcre2grep
 - sed
+- zsh
+- [asciigraph](https://github.com/guptarohit/asciigraph)
 
-
-### Examples
+### Examples (old)
 ![1] ![2]
 
 [1]: https://github.com/communistkiro/wdr/raw/master/gscreenshot_2020-04-13-044308.png "ex. 1"
